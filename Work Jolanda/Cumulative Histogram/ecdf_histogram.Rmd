@@ -7,7 +7,7 @@ output: html_document
 
 
 ```{r, message=FALSE}
-setwd("~/Documents/UvA/qDNA")
+setwd("~/Documents/PhD/Projects/qDNA")
 load("Markdown test.RData")
 
 library(ggplot2)
@@ -26,9 +26,17 @@ for(i in 1:length(n))
 
 heights <- heights[1:length(unique(totaal))]
 percent <- heights/length(totaal)*100
-df <- data.frame(score = as.factor(sort(unique(totaal))), total = heights, percent = round(percent,2))
+df <- data.frame(score = sort(unique(totaal)), total = heights, percent = round(percent,2))
 
-h <- ggplot(data = df, aes(x = score, y = total)) + geom_histogram(stat = "identity", binwidth = 1) + xlab("Totaal score") + ylab("% studenten dat score of hoger heeft") + geom_text(aes(label= paste(percent, "%", sep = "")), position=position_dodge(width=0.9), vjust=-0.25) 
+h <- ggplot(data = df, aes(x = score, y = total)) + 
+  geom_histogram(stat = "identity", binwidth = 1) + 
+  xlab("Totaal score") + ylab("% studenten dat score of hoger heeft") + 
+  theme(panel.grid = element_blank()) + 
+  geom_text(aes(label= paste(percent, "%", sep = "")), position=position_dodge(width = 0.9), vjust=-0.25, size = 2) + 
+  scale_y_continuous(labels = c(0, 20, 40, 60, 80, 100)) +
+  geom_hline(yintercept = c(100, 200, 300, 400), linetype = "dotted") +
+  scale_x_continuous(limits = c(0, ncol(input.correct)), breaks = 1:ncol(input.correct))
+
 
 print(h)
 ```
