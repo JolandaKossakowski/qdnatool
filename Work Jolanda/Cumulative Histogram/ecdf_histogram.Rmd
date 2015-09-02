@@ -24,19 +24,24 @@ for(i in 1:length(n))
   heights = c(heights, h)
 }
 
+cesuurlijnen <- seq(0.2, 0.8, 0.2) * nrow(input.correct)
+gridlijnen <- round(seq(0, nrow(input.correct), (nrow(input.correct)/25)), 0)
+
+gridlijnen <- gridlijnen[-grep(paste(cesuurlijnen, collapse = "|"), gridlijnen)]
+
 heights <- heights[1:length(unique(totaal))]
 percent <- heights/length(totaal)*100
 df <- data.frame(score = sort(unique(totaal)), total = heights, percent = round(percent,2))
 
 h <- ggplot(data = df, aes(x = score, y = total)) + 
+    geom_hline(yintercept = c(gridlijnen), linetype = "solid", colour = "gray80") +  
+  geom_hline(yintercept = cesuurlijnen, linetype = "dashed", size = 0.75, colour = "black") +
   geom_histogram(stat = "identity", binwidth = 1) + 
   xlab("Totaal score") + ylab("% studenten dat score of hoger heeft") + 
-  theme(panel.grid = element_blank()) + 
-  geom_text(aes(label= paste(percent, "%", sep = "")), position=position_dodge(width = 0.9), vjust=-0.25, size = 2) + 
-  scale_y_continuous(labels = c(0, 20, 40, 60, 80, 100)) +
-  geom_hline(yintercept = c(100, 200, 300, 400), linetype = "dotted") +
-  scale_x_continuous(limits = c(0, ncol(input.correct)), breaks = 1:ncol(input.correct))
-
+  scale_y_continuous(breaks = c(0, cesuurlijnen, nrow(input.correct)), labels = c(seq(0, 100, 20))) +
+  scale_x_continuous(limits = c(0, ncol(input.correct)), breaks = 1:ncol(input.correct)) + 
+  theme_bw() +
+  theme(panel.grid = element_blank())
 
 print(h)
 ```
