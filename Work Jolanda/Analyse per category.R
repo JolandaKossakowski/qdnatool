@@ -17,6 +17,18 @@ Score <- function(key, input.answers, n.answer.op, item.names = NULL, category) 
   #   list with: Cronbach's alpha, maximum number of answer options, frequency and percentage correct per item, corrected item total correlation,
   #   frequence and percentage of each answer options per item, and corrected item total correlation per answer option.
   
+  # Create key matrix
+  old.key <- key # save original key
+  
+  k <- matrix(0, nrow = max(n.answer.op), ncol = length(n.answer.op))
+  colnames(k) <- colnames(input.answers)
+  for(i in 1:ncol(k))
+  {
+    k[key[i],i] = 1
+  }
+  
+  key <- k # 
+  
   # Create Correct/Incorrect Matrix
   if(is.null(item.names)){
     item.names <- paste("Item ",1:ncol(input.answers),sep = "")

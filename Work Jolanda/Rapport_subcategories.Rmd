@@ -12,7 +12,7 @@ output:
 
   
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
-load("random_data_error.RData")
+load("oefendata.RData")
 ```
 
 ```{r, echo = FALSE, warning = FALSE, message = FALSE}
@@ -419,7 +419,7 @@ CumHist <- function(input.correct){
   cesuurlijnen <- seq(0.2, 0.8, 0.2) * nrow(input.correct)
   gridlijnen <- round(seq(0, nrow(input.correct), (nrow(input.correct)/25)), 0)
   
-  gridlijnen <- gridlijnen[-grep(paste(cesuurlijnen, collapse = "|"), gridlijnen)]
+  gridlijnen <- gridlijnen[-grep(paste(round(cesuurlijnen,0), collapse = "|"), gridlijnen)]
   
   heights <- heights[1:length(unique(totaal))]
   percent <- heights/length(totaal)*100
